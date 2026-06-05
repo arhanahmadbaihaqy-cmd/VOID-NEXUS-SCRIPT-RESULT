@@ -59,7 +59,7 @@ local Config = {
         Verified = CheckSavedSession(),
         MonetizedLink = "https://sfl.gl/S130"
     },
-    DiscordLink = "https://discord.gg/voidnexus",
+    DiscordLink = "https://discord.gg/p8s5TXW4",
     
     -- Movement Exploits
     SpeedActive = false, SpeedValue = 100,
@@ -615,7 +615,7 @@ local function AddSlider(container, text, activeKey, valKey, minV, maxV)
     numBox.Position = UDim2.new(0.5, -50, 0, 32)
     numBox.BackgroundColor3 = Color3.fromRGB(6, 7, 14)
     numBox.Text = tostring(Config[valKey])
-    numBox.PlaceholderText = "ketik angka"
+    numBox.PlaceholderText = "..."
     numBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     numBox.Font = Enum.Font.Gotham
     numBox.TextSize = 11
