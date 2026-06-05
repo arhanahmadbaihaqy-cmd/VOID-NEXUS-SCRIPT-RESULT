@@ -57,7 +57,7 @@ local Config = {
     KeySystem = {
         Enabled = true,
         Verified = CheckSavedSession(),
-        MonetizedLink = "https://sfl.gl/9PF0Bo"
+        MonetizedLink = "https://sfl.gl/S130"
     },
     DiscordLink = "https://discord.gg/voidnexus",
     
@@ -80,8 +80,8 @@ local Config = {
     AimActive = false,
     ShowFov = false,
     FovRadius = 150,
-    AimWallActive = false, -- SEKARANG OTOMATIS OFF PAS LOAD
-    AimPart = "Head",      -- SEKARANG OTOMATIS HEAD PAS LOAD
+    AimWallActive = false, 
+    AimPart = "Head",      
     
     -- Target & Teleport Systems
     StalkerActive = false,
@@ -131,6 +131,7 @@ local function GetChar()
 end
 
 local function GetPlayerByName(name)
+    if not name or name == "" then return nil end
     name = string.lower(name)
     for _, p in pairs(Players:GetPlayers()) do
         if string.sub(string.lower(p.Name), 1, #name) == name or string.sub(string.lower(p.DisplayName), 1, #name) == name then
@@ -233,7 +234,7 @@ Main.Parent = ScreenGui
 Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 14)
 
 local MainStroke = Instance.new("UIStroke", Main)
-MainStroke.Color = Color3.fromRGB(0, 102, 255) -- FUTURISTIC NEON BLUE
+MainStroke.Color = Color3.fromRGB(0, 102, 255) 
 MainStroke.Thickness = 2
 MainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 
@@ -269,7 +270,7 @@ KeyTitle.BackgroundTransparency = 1
 local KeyNote = Instance.new("TextLabel", KeyFrame)
 KeyNote.Size = UDim2.new(1, -40, 0, 40)
 KeyNote.Position = UDim2.new(0, 20, 0, 50)
-KeyNote.Text = "Pencet 'GET KEY LINK' untuk ambil kunci harian.\nBypass terdeteksi = Blacklist Otomatis."
+KeyNote.Text = "Click 'GET KEY LINK' to get the key.\nBypass."
 KeyNote.TextColor3 = Color3.fromRGB(140, 160, 180)
 KeyNote.Font = Enum.Font.Gotham
 KeyNote.TextSize = 11
@@ -330,7 +331,7 @@ local tabs = {}
 local function UnveilMainGui()
     if KeyFrame then KeyFrame:Destroy() end
     Main.Visible = true
-    SendNotification("V.O.I.D HUB", "Access Granted! Buka/Tutup menu pakai tombol Right Control [RCTRL].", 6)
+    SendNotification("V.O.I.D HUB", "Granted! Open/closed use [RCTRL] or You can click the button", 6)
     
     if tabs["🏃 MOVEMENT"] then
         tabs["🏃 MOVEMENT"].Button.BackgroundColor3 = Color3.fromRGB(0, 102, 255)
@@ -343,10 +344,10 @@ end
 GetKeyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
         setclipboard(Config.KeySystem.MonetizedLink)
-        SendNotification("KEY SYSTEM", "Link berhasil disalin! Silahkan buka di browser lu.", 5)
+        SendNotification("KEY SYSTEM", "Link Copied!.", 5)
     else
         KeyInput.Text = Config.KeySystem.MonetizedLink
-        SendNotification("KEY SYSTEM", "Executor lu gak support copy, link dimunculkan di kotak teks!", 6)
+        SendNotification("KEY SYSTEM", "Your executor doesn't support clipboard copy. Link is displayed in the text box!", 6)
     end
 end)
 
@@ -365,8 +366,8 @@ VerifyBtn.MouseButton1Click:Connect(function()
         UnveilMainGui()
     else
         KeyInput.Text = ""
-        KeyInput.PlaceholderText = "KUNCI SALAH / EXPIRED!!"
-        SendNotification("KEY SYSTEM", "Kunci yang lu masukin salah!", 5)
+        KeyInput.PlaceholderText = "WRONG / EXPIRED!!"
+        SendNotification("KEY SYSTEM", "WRONG / EXPIRED!", 5)
     end
 end)
 
@@ -582,16 +583,15 @@ end
 
 local function AddSlider(container, text, activeKey, valKey, minV, maxV)
     local f = Instance.new("Frame", container)
-    f.Size = UDim2.new(1, 0, 0, 75)
+    f.Size = UDim2.new(1, 0, 0, 85)
     f.BackgroundColor3 = Color3.fromRGB(12, 14, 26)
     f.BackgroundTransparency = 0.2
-    f.ZIndex = 3
     Instance.new("UICorner", f).CornerRadius = UDim.new(0, 8)
     local sliderStroke = Instance.new("UIStroke", f)
     sliderStroke.Color = Config[activeKey] and Color3.fromRGB(0, 102, 255) or Color3.fromRGB(30, 42, 60)
 
     local label = Instance.new("TextLabel", f)
-    label.Size = UDim2.new(1, -20, 0, 28)
+    label.Size = UDim2.new(1, -20, 0, 25)
     label.Position = UDim2.new(0, 12, 0, 5)
     label.Text = text .. " [" .. (Config[activeKey] and "ENABLED" or "DISABLED") .. "] | " .. Config[valKey]
     label.TextColor3 = Color3.fromRGB(225, 245, 255)
@@ -599,76 +599,93 @@ local function AddSlider(container, text, activeKey, valKey, minV, maxV)
     label.TextSize = 10
     label.BackgroundTransparency = 1
     label.TextXAlignment = Enum.TextXAlignment.Left
-    label.ZIndex = 3
 
     local toggle = Instance.new("TextButton", f)
-    toggle.Size = UDim2.new(0, 75, 0, 32)
-    toggle.Position = UDim2.new(0, 12, 0.5, 5)
+    toggle.Size = UDim2.new(0, 75, 0, 30)
+    toggle.Position = UDim2.new(0, 12, 0, 32)
     toggle.Text = Config[activeKey] and "ON" or "OFF"
     toggle.BackgroundColor3 = Config[activeKey] and Color3.fromRGB(0, 102, 255) or Color3.fromRGB(40, 47, 65)
     toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
     toggle.Font = Enum.Font.GothamBold
     toggle.TextSize = 11
-    toggle.ZIndex = 3
     Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 6)
 
-    local minus = Instance.new("TextButton", f)
-    minus.Size = UDim2.new(0, 38, 0, 32)
-    minus.Position = UDim2.new(0.45, 0, 0.5, 5)
-    minus.Text = "-"
-    minus.BackgroundColor3 = Color3.fromRGB(30, 37, 55)
-    minus.TextColor3 = Color3.fromRGB(0, 180, 255)
-    minus.Font = Enum.Font.GothamBold
-    minus.TextSize = 16
-    minus.ZIndex = 3
-    Instance.new("UICorner", minus).CornerRadius = UDim.new(0, 6)
-
-    local valueLabel = Instance.new("TextLabel", f)
-    valueLabel.Size = UDim2.new(0, 60, 0, 32)
-    valueLabel.Position = UDim2.new(0.59, 0, 0.5, 5)
-    valueLabel.Text = tostring(Config[valKey])
-    valueLabel.BackgroundColor3 = Color3.fromRGB(6, 7, 14)
-    valueLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    valueLabel.Font = Enum.Font.GothamBold
-    valueLabel.TextSize = 11
-    valueLabel.ZIndex = 3
-    Instance.new("UICorner", valueLabel).CornerRadius = UDim.new(0, 6)
-    Instance.new("UIStroke", valueLabel).Color = Color3.fromRGB(0, 102, 255)
+    local numBox = Instance.new("TextBox", f)
+    numBox.Size = UDim2.new(0, 100, 0, 30)
+    numBox.Position = UDim2.new(0.5, -50, 0, 32)
+    numBox.BackgroundColor3 = Color3.fromRGB(6, 7, 14)
+    numBox.Text = tostring(Config[valKey])
+    numBox.PlaceholderText = "ketik angka"
+    numBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    numBox.Font = Enum.Font.Gotham
+    numBox.TextSize = 11
+    Instance.new("UICorner", numBox).CornerRadius = UDim.new(0, 6)
+    Instance.new("UIStroke", numBox).Color = Color3.fromRGB(0, 102, 255)
 
     local plus = Instance.new("TextButton", f)
-    plus.Size = UDim2.new(0, 38, 0, 32)
-    plus.Position = UDim2.new(0.82, 0, 0.5, 5)
+    plus.Size = UDim2.new(0, 45, 0, 30)
+    plus.Position = UDim2.new(1, -105, 0, 32)
     plus.Text = "+"
     plus.BackgroundColor3 = Color3.fromRGB(30, 37, 55)
     plus.TextColor3 = Color3.fromRGB(0, 180, 255)
     plus.Font = Enum.Font.GothamBold
     plus.TextSize = 16
-    plus.ZIndex = 3
     Instance.new("UICorner", plus).CornerRadius = UDim.new(0, 6)
 
-    toggle.MouseButton1Click:Connect(function()
-        if not Config.KeySystem.Verified then return end
-        Config[activeKey] = not Config[activeKey]
+    local minus = Instance.new("TextButton", f)
+    minus.Size = UDim2.new(0, 45, 0, 30)
+    minus.Position = UDim2.new(1, -55, 0, 32)
+    minus.Text = "-"
+    minus.BackgroundColor3 = Color3.fromRGB(30, 37, 55)
+    minus.TextColor3 = Color3.fromRGB(0, 180, 255)
+    minus.Font = Enum.Font.GothamBold
+    minus.TextSize = 16
+    Instance.new("UICorner", minus).CornerRadius = UDim.new(0, 6)
+
+    local function updateDisplay()
         label.Text = text .. " [" .. (Config[activeKey] and "ENABLED" or "DISABLED") .. "] | " .. Config[valKey]
+        numBox.Text = tostring(Config[valKey])
+    end
+
+    toggle.MouseButton1Click:Connect(function()
+        Config[activeKey] = not Config[activeKey]
         toggle.Text = Config[activeKey] and "ON" or "OFF"
         toggle.BackgroundColor3 = Config[activeKey] and Color3.fromRGB(0, 102, 255) or Color3.fromRGB(40, 47, 65)
         sliderStroke.Color = Config[activeKey] and Color3.fromRGB(0, 102, 255) or Color3.fromRGB(30, 42, 60)
-        
-        local h, _ = GetChar()
-        if h and activeKey == "SpeedActive" and not Config.SpeedActive then h.WalkSpeed = 16 end
+        updateDisplay()
+        if activeKey == "SpeedActive" and not Config.SpeedActive then
+            local h, _ = GetChar()
+            if h then h.WalkSpeed = 16 end
+        end
     end)
 
-    local function update(delta)
-        if not Config.KeySystem.Verified then return end
-        local newVal = Config[valKey] + delta
-        if newVal >= minV and newVal <= maxV then
-            Config[valKey] = newVal
-            valueLabel.Text = tostring(Config[valKey])
-            label.Text = text .. " [" .. (Config[activeKey] and "ENABLED" or "DISABLED") .. "] | " .. Config[valKey]
+    numBox.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            local newVal = tonumber(numBox.Text)
+            if newVal and newVal >= minV and newVal <= maxV then
+                Config[valKey] = newVal
+                updateDisplay()
+            else
+                updateDisplay()
+            end
         end
-    end
-    minus.MouseButton1Click:Connect(function() update(-5) end)
-    plus.MouseButton1Click:Connect(function() update(5) end)
+    end)
+
+    minus.MouseButton1Click:Connect(function()
+        local newVal = Config[valKey] - 5
+        if newVal >= minV then
+            Config[valKey] = newVal
+            updateDisplay()
+        end
+    end)
+
+    plus.MouseButton1Click:Connect(function()
+        local newVal = Config[valKey] + 5
+        if newVal <= maxV then
+            Config[valKey] = newVal
+            updateDisplay()
+        end
+    end)
 end
 
 local function AddColorPicker(container, titleText, configKey)
@@ -801,12 +818,12 @@ AddSlider(visualTab, "BIG HITBOX ENGINE", "HitboxActive", "HitboxSize", 2, 60)
 AddToggle(visualTab, "FULL BRIGHT", "FullBrightActive")
 AddToggle(visualTab, "NO FOG", "NoFogActive")
 
--- COMBAT CONFIGS (FIXED RE-ROUTED DESIGN)
+-- COMBAT CONFIGS
 AddHeader(combatTab, "AIMBOT CRITICAL MECHANICS")
 AddToggle(combatTab, "AIMBOT MASTER SWITCH", "AimActive")
-AddSlider(combatTab, "AIMBOT FOV SIZE", "ShowFov", "FovRadius", 50, 400) -- TOGGLE FOV DIKONTROL DARI SINI
-AddSelector(combatTab, "WALL CHECK LOCK", "AimWallActive", {false, true}) -- DEFAULT: OFF
-AddSelector(combatTab, "AIMBOT TARGET PART", "AimPart", {"Head", "Torso"}) -- DEFAULT: HEAD, SISA 2 PILIHAN HRP DIHAPUS
+AddSlider(combatTab, "AIMBOT FOV SIZE", "ShowFov", "FovRadius", 50, 400) 
+AddSelector(combatTab, "WALL CHECK LOCK", "AimWallActive", {false, true}) 
+AddSelector(combatTab, "AIMBOT TARGET PART", "AimPart", {"Head", "Torso"}) 
 
 -- COLORING CONFIGS
 AddHeader(coloringTab, "THEME & ESP COLOR SETTINGS")
@@ -820,84 +837,180 @@ AddHeader(boosterTab, "PERFORMANCE BOOSTER")
 AddToggle(boosterTab, "POTATO MODE", "PotatoModeActive")
 AddToggle(boosterTab, "FPS UNLOCKER", "FpsUnlockerActive")
 
--- SYSTEM CONTROLS (UPGRADED BLUE THEME DESIGN)
-AddHeader(powerTab, "PLAYER MANIPULATION & STALKER")
-local InputFrame = Instance.new("Frame", powerTab)
-InputFrame.Size = UDim2.new(1, 0, 0, 45)
-InputFrame.BackgroundTransparency = 1
-InputFrame.ZIndex = 3
+-- ============================================================================
+-- SYSTEM CONTROL TAB - ALL IN ONE (STALK + TELEPORT + BRING)
+-- ============================================================================
+AddHeader(powerTab, "TARGET SYSTEM (SAME NAME FOR ALL)")
 
-local PlayerBox = Instance.new("TextBox", InputFrame)
-PlayerBox.Size = UDim2.new(1, 0, 1, 0)
-PlayerBox.BackgroundColor3 = Color3.fromRGB(12, 14, 26)
-PlayerBox.PlaceholderText = "Name player target here..."
-PlayerBox.PlaceholderColor3 = Color3.fromRGB(0, 180, 255) -- BRIGHT NEON BLUE FOR CLEAR VISIBILITY
-PlayerBox.Text = ""
-PlayerBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-PlayerBox.Font = Enum.Font.Gotham
-PlayerBox.TextSize = 11
-PlayerBox.ZIndex = 3
-Instance.new("UICorner", PlayerBox).CornerRadius = UDim.new(0, 6)
-Instance.new("UIStroke", PlayerBox).Color = Color3.fromRGB(0, 102, 255)
+-- Input box untuk nama target (SATU UNTUK SEMUA)
+local TargetInputFrame = Instance.new("Frame", powerTab)
+TargetInputFrame.Size = UDim2.new(1, 0, 0, 45)
+TargetInputFrame.BackgroundTransparency = 1
 
-local StalkToggle = Instance.new("TextButton", powerTab)
-StalkToggle.Size = UDim2.new(1, 0, 0, 40)
-StalkToggle.BackgroundColor3 = Color3.fromRGB(16, 22, 38)
-StalkToggle.Text = "TOGGLE STALKER MODE: OFF"
-StalkToggle.TextColor3 = Color3.fromRGB(0, 180, 255)
-StalkToggle.Font = Enum.Font.GothamBold
-StalkToggle.TextSize = 11
-StalkToggle.ZIndex = 3
-Instance.new("UICorner", StalkToggle).CornerRadius = UDim.new(0, 6)
-Instance.new("UIStroke", StalkToggle).Color = Color3.fromRGB(0, 102, 255)
+local TargetNameBox = Instance.new("TextBox", TargetInputFrame)
+TargetNameBox.Size = UDim2.new(1, 0, 1, 0)
+TargetNameBox.BackgroundColor3 = Color3.fromRGB(12, 14, 26)
+TargetNameBox.PlaceholderText = "Masukkan nama target disini..."
+TargetNameBox.PlaceholderColor3 = Color3.fromRGB(0, 180, 255)
+TargetNameBox.Text = ""
+TargetNameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TargetNameBox.Font = Enum.Font.Gotham
+TargetNameBox.TextSize = 11
+Instance.new("UICorner", TargetNameBox).CornerRadius = UDim.new(0, 6)
+Instance.new("UIStroke", TargetNameBox).Color = Color3.fromRGB(0, 102, 255)
 
-StalkToggle.MouseButton1Click:Connect(function()
-    Config.StalkerActive = not Config.StalkerActive
-    Config.TargetPlayerName = PlayerBox.Text
-    StalkToggle.Text = "TOGGLE STALKER MODE: " .. (Config.StalkerActive and "ON" or "OFF")
-    StalkToggle.BackgroundColor3 = Config.StalkerActive and Color3.fromRGB(0, 70, 180) or Color3.fromRGB(16, 22, 38)
-end)
+-- ========== STALKER SYSTEM (FIX + TOMBOL GA ILANG) ==========
+-- ========== STALKER KAMERA DI LU (BUKAN NEMPEL) + GERAK LAGI PAS OFF ==========
+local StalkConnection = nil
+local StalkActive = false
+local StalkTargetPlayer = nil
 
-local TeleportBtn = Instance.new("TextButton", powerTab)
-TeleportBtn.Size = UDim2.new(1, 0, 0, 40)
-TeleportBtn.BackgroundColor3 = Color3.fromRGB(0, 51, 102) -- RE-THEMED TO FUTURISTIC BLUE
-TeleportBtn.Text = "⚡ TELEPORT TO TARGET"
-TeleportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-TeleportBtn.Font = Enum.Font.GothamBold
-TeleportBtn.TextSize = 11
-TeleportBtn.ZIndex = 3
-Instance.new("UICorner", TeleportBtn).CornerRadius = UDim.new(0, 6)
-Instance.new("UIStroke", TeleportBtn).Color = Color3.fromRGB(0, 102, 255)
+local function StopStalking()
+    if StalkConnection then
+        StalkConnection:Disconnect()
+        StalkConnection = nil
+    end
+    StalkActive = false
+    StalkTargetPlayer = nil
+    
+    -- YANG PENTING: LEPAS ANCHORED BIAR BISA GERAK LAGI!
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        LocalPlayer.Character.HumanoidRootPart.Anchored = false
+    end
+    
+    -- Reset speed biar normal lagi
+    local hum = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    if hum and Config.SpeedActive then
+        hum.WalkSpeed = Config.SpeedValue
+    elseif hum then
+        hum.WalkSpeed = 16
+    end
+    
+    print("Stalk OFF - Lu bisa gerak lagi!")
+end
 
-TeleportBtn.MouseButton1Click:Connect(function()
-    if PlayerBox.Text ~= "" then
-        local target = GetPlayerByName(PlayerBox.Text)
-        local _, mHrp = GetChar()
-        if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and mHrp then
-            mHrp.CFrame = target.Character.HumanoidRootPart.CFrame
-            SendNotification("TELEPORT", "Berhasil teleport ke target!", 3)
+local function StartStalking(targetPlayer)
+    StopStalking()
+    if not targetPlayer or not targetPlayer.Character then 
+        SendNotification("STALK ERROR", "ERROR!", 2)
+        return false 
+    end
+    
+    StalkActive = true
+    StalkTargetPlayer = targetPlayer
+    
+    -- Kunci karakter lu biar tetep di belakang target (opsional, biar presisi)
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        local hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+        if hum then hum.WalkSpeed = 0 end
+    end
+    
+    -- LOOP NGE-STALK: POSISI LU NGIKUTIN TARGET, TAPI KAMERA TETEP DI LU!
+    StalkConnection = RunService.RenderStepped:Connect(function()
+        if StalkTargetPlayer and StalkTargetPlayer.Character and StalkTargetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local targetHrp = StalkTargetPlayer.Character.HumanoidRootPart
+            local myHrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            
+            if myHrp then
+                -- Lu ngikutin target dari belakang (offset 5 stud di belakang)
+                local behindOffset = targetHrp.CFrame.LookVector * -5
+                myHrp.CFrame = CFrame.new(targetHrp.Position + behindOffset, targetHrp.Position)
+            end
         else
-            SendNotification("ERROR", "Target tidak ditemukan / tidak valid!", 3)
+            -- Target ilang/mati -> matiin stalk
+            StopStalking()
+            if StalkBtn then 
+                StalkBtn.Text = "👁️ STALK MODE: OFF"
+                StalkBtn.BackgroundColor3 = Color3.fromRGB(40, 47, 65)
+            end
+            SendNotification("STALK", "Target gone, stalk off!", 2)
+        end
+    end)
+    
+    return true
+end
+
+-- Tombol Stalk
+local StalkBtn = Instance.new("TextButton", powerTab)
+StalkBtn.Size = UDim2.new(1, 0, 0, 45)
+StalkBtn.Text = "👁️ STALK MODE: OFF"
+StalkBtn.BackgroundColor3 = Color3.fromRGB(40, 47, 65)
+StalkBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+StalkBtn.Font = Enum.Font.GothamBold
+StalkBtn.TextSize = 11
+Instance.new("UICorner", StalkBtn).CornerRadius = UDim.new(0, 6)
+Instance.new("UIStroke", StalkBtn).Color = Color3.fromRGB(0, 102, 255)
+
+StalkBtn.MouseButton1Click:Connect(function()
+    if not Config.KeySystem.Verified then return end
+    if StalkActive then
+        StopStalking()
+        StalkBtn.Text = "👁️ STALK MODE: OFF"
+        StalkBtn.BackgroundColor3 = Color3.fromRGB(40, 47, 65)
+        SendNotification("STALK", "OFF - Lu bisa gerak lagi!", 2)
+    else
+        local target = GetPlayerByName(TargetNameBox.Text)
+        if target then
+            if StartStalking(target) then
+                StalkBtn.Text = "👁️ STALK MODE: ON (" .. target.Name .. ")"
+                StalkBtn.BackgroundColor3 = Color3.fromRGB(0, 102, 255)
+                SendNotification("STALK", "Ngikutin " .. target.Name .. " dari belakang!", 2)
+            end
+        else
+            SendNotification("STALK ERROR", "Target not found!", 2)
         end
     end
 end)
 
+-- Tombol Teleport
+local TeleportBtn = Instance.new("TextButton", powerTab)
+TeleportBtn.Size = UDim2.new(1, 0, 0, 45)
+TeleportBtn.BackgroundColor3 = Color3.fromRGB(0, 51, 102)
+TeleportBtn.Text = "⚡ TELEPORT TO TARGET"
+TeleportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleportBtn.Font = Enum.Font.GothamBold
+TeleportBtn.TextSize = 11
+Instance.new("UICorner", TeleportBtn).CornerRadius = UDim.new(0, 6)
+Instance.new("UIStroke", TeleportBtn).Color = Color3.fromRGB(0, 102, 255)
+
+TeleportBtn.MouseButton1Click:Connect(function()
+    if not Config.KeySystem.Verified then return end
+    local target = GetPlayerByName(TargetNameBox.Text)
+    local _, myHrp = GetChar()
+    if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myHrp then
+        myHrp.CFrame = target.Character.HumanoidRootPart.CFrame
+        SendNotification("TELEPORT", "STALK TO " .. target.Name .. "SUCCESFUL!", 2)
+    else
+        SendNotification("ERROR", "Target not found!", 2)
+    end
+end)
+
+-- Tombol Bring (Bawa target ke lu)
 local BringBtn = Instance.new("TextButton", powerTab)
-BringBtn.Size = UDim2.new(1, 0, 0, 40)
-BringBtn.BackgroundColor3 = Color3.fromRGB(0, 30, 70) -- RE-THEMED TO DEEP BLUE
-BringBtn.Text = "🌀 BRING PLAYER"
+BringBtn.Size = UDim2.new(1, 0, 0, 45)
+BringBtn.BackgroundColor3 = Color3.fromRGB(0, 30, 70)
+BringBtn.Text = "🌀 BRING TARGET TO YOU"
 BringBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 BringBtn.Font = Enum.Font.GothamBold
 BringBtn.TextSize = 11
-BringBtn.ZIndex = 3
 Instance.new("UICorner", BringBtn).CornerRadius = UDim.new(0, 6)
 Instance.new("UIStroke", BringBtn).Color = Color3.fromRGB(0, 102, 255)
 
 BringBtn.MouseButton1Click:Connect(function()
-    SendNotification("SYSTEM", "Fungsi Bring memerlukan exploit tool khusus di game ini.", 3)
+    if not Config.KeySystem.Verified then return end
+    local target = GetPlayerByName(TargetNameBox.Text)
+    local _, myHrp = GetChar()
+    if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myHrp then
+        target.Character.HumanoidRootPart.CFrame = myHrp.CFrame + Vector3.new(0, 0, 2)
+        SendNotification("BRING", "You bring " .. target.Name .. "SUCCESFUL!", 2)
+    else
+        SendNotification("ERROR", "Target not found!", 2)
+    end
 end)
 
 AddHeader(powerTab, "DANGER ZONE")
+
 local exitBtn = Instance.new("TextButton", powerTab)
 exitBtn.Size = UDim2.new(1, 0, 0, 45)
 exitBtn.BackgroundColor3 = Color3.fromRGB(130, 0, 0)
@@ -905,15 +1018,17 @@ exitBtn.Text = "⛔ DESTROY & EXIT SCRIPT"
 exitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 exitBtn.Font = Enum.Font.GothamBold
 exitBtn.TextSize = 11
-exitBtn.ZIndex = 3
 Instance.new("UICorner", exitBtn).CornerRadius = UDim.new(0, 8)
 
 exitBtn.MouseButton1Click:Connect(function()
     ScriptRunning = false
+    StopStalking()
     ApplyPotatoMode(false)
     if FovCircle then FovCircle:Destroy() end
     local _, hrp = GetChar()
     if hrp and hrp:FindFirstChild("SpinBot_Velocity") then hrp.SpinBot_Velocity:Destroy() end
+    if hrp and hrp:FindFirstChild("Fly") then hrp.Fly:Destroy() end
+    if hrp then hrp.Anchored = false end
     for _, espObj in pairs(Esp) do
         pcall(function()
             espObj.Box.Visible = false
@@ -927,33 +1042,28 @@ exitBtn.MouseButton1Click:Connect(function()
 end)
 
 -- ============================================================================
--- ℹ️ INFO TAB REALIZATION (CORRECT HIERARCHY SEQUENCE - FIXED LAYOUT)
+-- ℹ️ INFO TAB
 -- ============================================================================
 AddHeader(infoTab, "CREDITS CHRONICLES")
 
--- 1. TENS CREATOR (PALING ATAS)
 local AuthorLabel = Instance.new("TextLabel", infoTab)
 AuthorLabel.Size = UDim2.new(1, -20, 0, 30)
 AuthorLabel.BackgroundTransparency = 1
-AuthorLabel.Text = "This script is made by: ?"
+AuthorLabel.Text = "This script is made by: someone"
 AuthorLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 AuthorLabel.Font = Enum.Font.GothamBold
 AuthorLabel.TextSize = 12
 AuthorLabel.TextXAlignment = Enum.TextXAlignment.Center
-AuthorLabel.ZIndex = 3
 
--- 4. TEKS PETUNJUK DISCORD (DI ATAS TOMBOL DISCORD 👇)
 local DiscordPromo = Instance.new("TextLabel", infoTab)
 DiscordPromo.Size = UDim2.new(1, -20, 0, 30)
 DiscordPromo.BackgroundTransparency = 1
-DiscordPromo.Text = "Btw join our discord link above 👆"
+DiscordPromo.Text = "Join our discord link below 👆"
 DiscordPromo.TextColor3 = Color3.fromRGB(0, 180, 255)
 DiscordPromo.Font = Enum.Font.Gotham
 DiscordPromo.TextSize = 11
 DiscordPromo.TextXAlignment = Enum.TextXAlignment.Center
-DiscordPromo.ZIndex = 3
 
--- 5. TOMBOL COPY DISCORD LINK (SEKARANG SUDAH DI PALING BAWAH SAKTI!)
 local CopyDcBtn = Instance.new("TextButton", infoTab)
 CopyDcBtn.Size = UDim2.new(1, -40, 0, 38)
 CopyDcBtn.BackgroundColor3 = Color3.fromRGB(30, 45, 90)
@@ -961,16 +1071,15 @@ CopyDcBtn.Text = "🔗 COPY DISCORD INVITE LINK"
 CopyDcBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 CopyDcBtn.Font = Enum.Font.GothamBold
 CopyDcBtn.TextSize = 10
-CopyDcBtn.ZIndex = 3
 Instance.new("UICorner", CopyDcBtn).CornerRadius = UDim.new(0, 6)
 Instance.new("UIStroke", CopyDcBtn).Color = Color3.fromRGB(0, 102, 255)
 
 CopyDcBtn.MouseButton1Click:Connect(function()
     if setclipboard then
         setclipboard(Config.DiscordLink)
-        SendNotification("DISCORD", "Link Discord berhasil disalin ke clipboard!", 3)
+        SendNotification("DISCORD", "Link Discord Copied!", 2)
     else
-        SendNotification("ERROR", "Executor lu gak punya fungsi setclipboard!", 3)
+        SendNotification("ERROR", "Failed!", 2)
     end
 end)
 
@@ -996,13 +1105,13 @@ RunService.Heartbeat:Connect(function()
     local h, hrp = GetChar()
     if not h or not hrp then return end
 
-    if Config.SpeedActive and not Config.StalkerActive then
+    if Config.SpeedActive and not StalkActive then
         h.WalkSpeed = Config.SpeedValue
-    elseif not Config.StalkerActive then
+    elseif not StalkActive then
         if h.WalkSpeed == Config.SpeedValue then h.WalkSpeed = 16 end
     end
 
-    if Config.SpinBotActive and not Config.StalkerActive then
+    if Config.SpinBotActive and not StalkActive then
         local spinVel = hrp:FindFirstChild("SpinBot_Velocity")
         if not spinVel then
             spinVel = Instance.new("BodyAngularVelocity")
@@ -1015,8 +1124,7 @@ RunService.Heartbeat:Connect(function()
         if hrp:FindFirstChild("SpinBot_Velocity") then hrp.SpinBot_Velocity:Destroy() end
     end
 
-    -- FIXED FLY NAVIGATION DIRECTION (A = KIRI [-], D = KANAN [+] FIXED!)
-    if Config.FlyActive and not Config.StalkerActive then
+    if Config.FlyActive and not StalkActive then
         local bv = hrp:FindFirstChild("Fly") or Instance.new("BodyVelocity", hrp)
         bv.Name = "Fly"
         bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
@@ -1028,16 +1136,6 @@ RunService.Heartbeat:Connect(function()
         bv.Velocity = dir.Magnitude > 0 and dir.Unit * Config.FlyValue or Vector3.zero
     elseif hrp:FindFirstChild("Fly") then
         hrp.Fly:Destroy()
-    end
-
-    -- ANTI-STUTTER STALKER COMPONENT (STABLE COORD INTERPRETATION)
-    if Config.StalkerActive and Config.TargetPlayerName ~= "" then
-        local stalkTarget = GetPlayerByName(Config.TargetPlayerName)
-        if stalkTarget and stalkTarget.Character and stalkTarget.Character:FindFirstChild("HumanoidRootPart") then
-            hrp.Velocity = Vector3.zero
-            h.WalkSpeed = 0
-            hrp.CFrame = stalkTarget.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3.5)
-        end
     end
 end)
 
@@ -1063,7 +1161,6 @@ RunService.RenderStepped:Connect(function()
     end
     Lighting.FogEnd = Config.NoFogActive and 999999 or OriginalLighting.FogEnd
 
-    -- AIMBOT LOGIC ENGINE (HEAD / TORSO PRE-ROUTED SWITCH)
     local ClosestTarget = nil
     local MaxDistance = Config.FovRadius
 
@@ -1098,7 +1195,6 @@ RunService.RenderStepped:Connect(function()
         end
     end
 
-    -- MULTI-FUNCTIONAL ESP MANAGER
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= LocalPlayer and Esp[p] then
             local char = p.Character
@@ -1162,12 +1258,12 @@ RunService.RenderStepped:Connect(function()
 end)
 
 -- ============================================================================
--- 🌌 ULTIMATE PRESIMULATION NOCLIP ENGINE (HIGH PERFORMA & PERFECT COLLISIONS)
+-- NOCLIP ENGINE
 -- ============================================================================
 RunService.PreSimulation:Connect(function()
     if not ScriptRunning or not Config.KeySystem.Verified then return end
     
-    if Config.NoclipActive or Config.StalkerActive then
+    if Config.NoclipActive or StalkActive then
         local char = LocalPlayer.Character
         if char then
             local charParts = char:GetChildren()
@@ -1181,6 +1277,6 @@ RunService.PreSimulation:Connect(function()
             end
         end
     end
-end)
+end) 
 
 print("⚡ V.O.I.D HUB [PATCH V4 - FINAL STABLE] DEPLOYED SUCCESSFULLY!")
