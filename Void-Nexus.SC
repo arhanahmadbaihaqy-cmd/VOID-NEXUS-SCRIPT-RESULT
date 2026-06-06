@@ -940,7 +940,7 @@ local function StopStalking()
         hum.WalkSpeed = 16
     end
     
-    print("Stalk OFF - Lu bisa gerak lagi!")
+    print("Stalk OFF - You can move again!")
 end
 
 local function StartStalking(targetPlayer)
@@ -1009,7 +1009,7 @@ StalkBtn.MouseButton1Click:Connect(function()
             if StartStalking(target) then
                 StalkBtn.Text = "👁️ STALK MODE: ON (" .. target.Name .. ")"
                 StalkBtn.BackgroundColor3 = Color3.fromRGB(0, 102, 255)
-                SendNotification("STALK", "Ngikutin " .. target.Name .. " dari belakang!", 2)
+                SendNotification("STALK", "TARGET " .. target.Name .. " SUCCES!", 2)
             end
         else
             SendNotification("STALK ERROR", "Target not found!", 2)
