@@ -15,20 +15,41 @@ local Camera = workspace.CurrentCamera
 -- ============================================================================
 -- SMART DAILY KEY SYSTEM WITH SESSION SAVING
 -- ============================================================================
+-- ============================================================================
+-- SMART DAILY KEY ENGINE (SINKRON MURNI GABUNGAN WEB)
+-- ============================================================================
 local function generateDailyKey()
-    local days = math.floor(os.time() / 86400)
+    -- 1. Ambil hitungan waktu UTC murni (Sama kayak Date.UTC di JavaScript)
+    local utcTable = os.date("!*t")
+    
+    -- Membuat timestamp UTC jam 00:00:00 murni hari ini
+    local utcTimestamp = os.time({
+        year = utcTable.year,
+        month = utcTable.month,
+        day = utcTable.day,
+        hour = 0,
+        min = 0,
+        sec = 0
+    })
+    
+    -- Hitung jumlah hari (Sama persis pembulatan ms di JS web)
+    local days = math.floor(utcTimestamp / 86400)
+    
+    -- 2. Jalankan rumus LCG pembentuk angka tengah (3576)
     local seed = days
     local function rng()
         seed = (seed * 9301 + 49297) % 233280
         return seed / 233280
     end
+    
     local r1 = math.floor(rng() * 9000 + 1000)
-    local r2 = math.floor(rng() * 9000 + 1000)
-    return "VOIDNX-" .. r1 .. "-" .. r2
+    local r2 = utcTable.year -- Ekor otomatis tahun berjalan (2026)
+    
+    return "VOIDNX-" .. tostring(r1) .. "-" .. tostring(r2)
 end
 
 local CorrectKeyToday = generateDailyKey()
-local SaveFileName = "VoidNexus_Session_" .. math.floor(os.time() / 86400) .. ".txt"
+local SaveFileName = "VoidNexus_Session_" .. math.floor(os.time(os.date("!*t")) / 86400) .. ".txt"
 
 local function CheckSavedSession()
     if readfile and isfile then
@@ -57,7 +78,7 @@ local Config = {
     KeySystem = {
         Enabled = true,
         Verified = CheckSavedSession(),
-        MonetizedLink = "https://sfl.gl/S130"
+        MonetizedLink = "https://sfl.gl/1EEfOP3"
     },
     DiscordLink = "https://discord.gg/p8s5TXW4",
     
@@ -270,7 +291,7 @@ KeyTitle.BackgroundTransparency = 1
 local KeyNote = Instance.new("TextLabel", KeyFrame)
 KeyNote.Size = UDim2.new(1, -40, 0, 40)
 KeyNote.Position = UDim2.new(0, 20, 0, 50)
-KeyNote.Text = "Click 'GET KEY LINK' to get the key.\nBypass."
+KeyNote.Text = "Click 'GET KEY LINK' to get the key."
 KeyNote.TextColor3 = Color3.fromRGB(140, 160, 180)
 KeyNote.Font = Enum.Font.Gotham
 KeyNote.TextSize = 11
