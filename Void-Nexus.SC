@@ -642,21 +642,52 @@ local function AddSlider(container, text, activeKey, valKey, minV, maxV)
     minus.TextSize = 16
     Instance.new("UICorner", minus).CornerRadius = UDim.new(0, 6)
 
+    -- ============================================================================
+    -- LIVE UPDATE ENGINE (MENERAPKAN VALUE LANGSUNG KE KARAKTER ROBLOX)
+    -- ============================================================================
+    local function ApplyValuesToCharacter()
+        pcall(function()
+            local humanoid, _ = GetChar()
+            if humanoid then
+                -- 1. Deteksi dan update jika yang diganti adalah Speed
+                if activeKey == "SpeedActive" then
+                    if Config.SpeedActive then
+                        humanoid.WalkSpeed = Config.SpeedValue
+                    else
+                        humanoid.WalkSpeed = 16
+                    end
+                -- 2. Deteksi dan update jika yang diganti adalah Jump Power
+                elseif activeKey == "JumpActive" then
+                    if Config.JumpActive then
+                        humanoid.UseJumpPower = true -- WAJIB true di Roblox modern!
+                        humanoid.JumpPower = Config.JumpValue
+                    else
+                        humanoid.JumpPower = 50
+                    end
+                end
+            end
+         pcall(function()
+             -- Auto-trigger untuk sistem hit box luar (jika ada loop)
+             if valKey == "HitboxSize" and Config.HitboxActive then
+                 -- Code loop hitbox lu bisa panggil kesini langsung biar instant respon
+             end
+         end)
+        end)
+    end
+
     local function updateDisplay()
         label.Text = text .. " [" .. (Config[activeKey] and "ENABLED" or "DISABLED") .. "] | " .. Config[valKey]
         numBox.Text = tostring(Config[valKey])
+        ApplyValuesToCharacter() -- Panggil fungsinya biar instan berubah pas value geser
     end
 
     toggle.MouseButton1Click:Connect(function()
+        if not Config.KeySystem.Verified then return end
         Config[activeKey] = not Config[activeKey]
         toggle.Text = Config[activeKey] and "ON" or "OFF"
         toggle.BackgroundColor3 = Config[activeKey] and Color3.fromRGB(0, 102, 255) or Color3.fromRGB(40, 47, 65)
         sliderStroke.Color = Config[activeKey] and Color3.fromRGB(0, 102, 255) or Color3.fromRGB(30, 42, 60)
         updateDisplay()
-        if activeKey == "SpeedActive" and not Config.SpeedActive then
-            local h, _ = GetChar()
-            if h then h.WalkSpeed = 16 end
-        end
     end)
 
     numBox.FocusLost:Connect(function(enterPressed)
@@ -672,6 +703,7 @@ local function AddSlider(container, text, activeKey, valKey, minV, maxV)
     end)
 
     minus.MouseButton1Click:Connect(function()
+        if not Config.KeySystem.Verified then return end
         local newVal = Config[valKey] - 5
         if newVal >= minV then
             Config[valKey] = newVal
@@ -680,6 +712,7 @@ local function AddSlider(container, text, activeKey, valKey, minV, maxV)
     end)
 
     plus.MouseButton1Click:Connect(function()
+        if not Config.KeySystem.Verified then return end
         local newVal = Config[valKey] + 5
         if newVal <= maxV then
             Config[valKey] = newVal
@@ -803,10 +836,10 @@ local infoTab = CreateTab("ℹ️ INFO")
 
 -- MOVEMENT CONFIGS
 AddHeader(moveTab, "MOVEMENT SETTINGS")
-AddSlider(moveTab, "SPEED HACK", "SpeedActive", "SpeedValue", 16, 250)
-AddSlider(moveTab, "HIGH & INF JUMP", "JumpActive", "JumpValue", 30, 250)
-AddSlider(moveTab, "FLY MODE", "FlyActive", "FlyValue", 50, 400)
-AddSlider(moveTab, "SPIN BOT SPEED", "SpinBotActive", "SpinSpeed", 5, 150)
+AddSlider(moveTab, "SPEED HACK", "SpeedActive", "SpeedValue", 16, 999999)
+AddSlider(moveTab, "HIGH & INF JUMP", "JumpActive", "JumpValue", 30, 999999)
+AddSlider(moveTab, "FLY MODE", "FlyActive", "FlyValue", 50, 999999)
+AddSlider(moveTab, "SPIN BOT SPEED", "SpinBotActive", "SpinSpeed", 5, 999999)
 AddToggle(moveTab, "NOCLIP", "NoclipActive")
 
 -- VISUAL CONFIGS
@@ -814,14 +847,14 @@ AddHeader(visualTab, "VISUAL ESP SETTINGS")
 AddToggle(visualTab, "AURA ESP (GLOW)", "AuraEspActive")
 AddToggle(visualTab, "BOX ESP", "BoxEspActive")
 AddToggle(visualTab, "TRACER ESP", "TracerActive")
-AddSlider(visualTab, "BIG HITBOX ENGINE", "HitboxActive", "HitboxSize", 2, 60)
+AddSlider(visualTab, "BIG HITBOX ENGINE", "HitboxActive", "HitboxSize", 2, 999999)
 AddToggle(visualTab, "FULL BRIGHT", "FullBrightActive")
 AddToggle(visualTab, "NO FOG", "NoFogActive")
 
 -- COMBAT CONFIGS
 AddHeader(combatTab, "AIMBOT CRITICAL MECHANICS")
 AddToggle(combatTab, "AIMBOT MASTER SWITCH", "AimActive")
-AddSlider(combatTab, "AIMBOT FOV SIZE", "ShowFov", "FovRadius", 50, 400) 
+AddSlider(combatTab, "AIMBOT FOV SIZE", "ShowFov", "FovRadius", 50, 900) 
 AddSelector(combatTab, "WALL CHECK LOCK", "AimWallActive", {false, true}) 
 AddSelector(combatTab, "AIMBOT TARGET PART", "AimPart", {"Head", "Torso"}) 
 
