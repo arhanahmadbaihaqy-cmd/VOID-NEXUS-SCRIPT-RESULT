@@ -1178,15 +1178,20 @@ RunService.Heartbeat:Connect(function()
         if hrp:FindFirstChild("SpinBot_Velocity") then hrp.SpinBot_Velocity:Destroy() end
     end
 
-    if Config.FlyActive and not StalkActive then
+if Config.FlyActive and not StalkActive then
         local bv = hrp:FindFirstChild("Fly") or Instance.new("BodyVelocity", hrp)
         bv.Name = "Fly"
         bv.MaxForce = Vector3.new(1e6, 1e6, 1e6)
         local dir = Vector3.zero
-        if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir = dir + Camera.CFrame.LookVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir = dir - Camera.CFrame.LookVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir = dir - Camera.CFrame.RightVector end
-        if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir = dir + Camera.CFrame.RightVector end
+        
+        -- 🔴 FIX: Cek dulu, kalau player LAGI ngetik chat, lewatin deteksi tombol biar karakter diem
+        if not UserInputService:GetFocusedTextBox() then
+            if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir = dir + Camera.CFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir = dir - Camera.CFrame.LookVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir = dir - Camera.CFrame.RightVector end
+            if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir = dir + Camera.CFrame.RightVector end
+        end
+        
         bv.Velocity = dir.Magnitude > 0 and dir.Unit * Config.FlyValue or Vector3.zero
     elseif hrp:FindFirstChild("Fly") then
         hrp.Fly:Destroy()
