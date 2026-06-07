@@ -1002,7 +1002,7 @@ StalkBtn.MouseButton1Click:Connect(function()
         StopStalking()
         StalkBtn.Text = "👁️ STALK MODE: OFF"
         StalkBtn.BackgroundColor3 = Color3.fromRGB(40, 47, 65)
-        SendNotification("STALK", "OFF - Lu bisa gerak lagi!", 2)
+        SendNotification("STALK", "OFF - You can move again!", 2)
     else
         local target = GetPlayerByName(TargetNameBox.Text)
         if target then
@@ -1034,7 +1034,7 @@ TeleportBtn.MouseButton1Click:Connect(function()
     local _, myHrp = GetChar()
     if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myHrp then
         myHrp.CFrame = target.Character.HumanoidRootPart.CFrame
-        SendNotification("TELEPORT", "STALK TO " .. target.Name .. "SUCCESFUL!", 2)
+        SendNotification("TELEPORT", "TELEPORT TO " .. target.Name .. "SUCCESFUL!", 2)
     else
         SendNotification("ERROR", "Target not found!", 2)
     end
