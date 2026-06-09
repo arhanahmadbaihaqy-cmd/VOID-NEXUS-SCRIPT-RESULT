@@ -857,10 +857,10 @@ local infoTab = CreateTab("ℹ️ INFO")
 
 -- MOVEMENT CONFIGS
 AddHeader(moveTab, "MOVEMENT SETTINGS")
-AddSlider(moveTab, "SPEED HACK", "SpeedActive", "SpeedValue", 16, 999999)
-AddSlider(moveTab, "HIGH & INF JUMP", "JumpActive", "JumpValue", 30, 999999)
-AddSlider(moveTab, "FLY MODE", "FlyActive", "FlyValue", 50, 999999)
-AddSlider(moveTab, "SPIN BOT SPEED", "SpinBotActive", "SpinSpeed", 5, 999999)
+AddSlider(moveTab, "SPEED HACK", "SpeedActive", "SpeedValue", 16, 99999999999999999999999999999999999999999999999999999999999999999999)
+AddSlider(moveTab, "HIGH & INF JUMP", "JumpActive", "JumpValue", 30, 99999999999999999999999999999999999999999999999999999999999999999999)
+AddSlider(moveTab, "FLY MODE", "FlyActive", "FlyValue", 50, 99999999999999999999999999999999999999999999999999999999999999999999)
+AddSlider(moveTab, "SPIN BOT SPEED", "SpinBotActive", "SpinSpeed", 5, 99999999999999999999999999999999999999999999999999999999999999999999)
 AddToggle(moveTab, "NOCLIP", "NoclipActive")
 
 -- VISUAL CONFIGS
@@ -868,14 +868,14 @@ AddHeader(visualTab, "VISUAL ESP SETTINGS")
 AddToggle(visualTab, "AURA ESP (GLOW)", "AuraEspActive")
 AddToggle(visualTab, "BOX ESP", "BoxEspActive")
 AddToggle(visualTab, "TRACER ESP", "TracerActive")
-AddSlider(visualTab, "BIG HITBOX ENGINE", "HitboxActive", "HitboxSize", 2, 999999)
+AddSlider(visualTab, "BIG HITBOX ENGINE", "HitboxActive", "HitboxSize", 2, 99999999999999999999999999999999999999999999999999999999999999999999)
 AddToggle(visualTab, "FULL BRIGHT", "FullBrightActive")
 AddToggle(visualTab, "NO FOG", "NoFogActive")
 
 -- COMBAT CONFIGS
 AddHeader(combatTab, "AIMBOT CRITICAL MECHANICS")
 AddToggle(combatTab, "AIMBOT MASTER SWITCH", "AimActive")
-AddSlider(combatTab, "AIMBOT FOV SIZE", "ShowFov", "FovRadius", 50, 900) 
+AddSlider(combatTab, "AIMBOT FOV SIZE", "ShowFov", "FovRadius", 50, 99999999999999999999999999999999999999999999999999999999999999999999) 
 AddSelector(combatTab, "WALL CHECK LOCK", "AimWallActive", {false, true}) 
 AddSelector(combatTab, "AIMBOT TARGET PART", "AimPart", {"Head", "Torso"}) 
 
