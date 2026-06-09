@@ -1034,7 +1034,7 @@ TeleportBtn.MouseButton1Click:Connect(function()
     local _, myHrp = GetChar()
     if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myHrp then
         myHrp.CFrame = target.Character.HumanoidRootPart.CFrame
-        SendNotification("TELEPORT", "TELEPORT TO " .. target.Name .. "SUCCESFUL!", 2)
+        SendNotification("TELEPORT", "TELEPORT TO " .. target.Name .. " SUCCESFUL!", 2)
     else
         SendNotification("ERROR", "Target not found!", 2)
     end
@@ -1057,7 +1057,7 @@ BringBtn.MouseButton1Click:Connect(function()
     local _, myHrp = GetChar()
     if target and target.Character and target.Character:FindFirstChild("HumanoidRootPart") and myHrp then
         target.Character.HumanoidRootPart.CFrame = myHrp.CFrame + Vector3.new(0, 0, 2)
-        SendNotification("BRING", "You bring " .. target.Name .. "SUCCESFUL!", 2)
+        SendNotification("BRING", "You bring " .. target.Name .. " SUCCESFUL!", 2)
     else
         SendNotification("ERROR", "Target not found!", 2)
     end
@@ -1112,7 +1112,7 @@ AuthorLabel.TextXAlignment = Enum.TextXAlignment.Center
 local DiscordPromo = Instance.new("TextLabel", infoTab)
 DiscordPromo.Size = UDim2.new(1, -20, 0, 30)
 DiscordPromo.BackgroundTransparency = 1
-DiscordPromo.Text = "Join our discord link below 👆"
+DiscordPromo.Text = "Join our discord link Above 👆"
 DiscordPromo.TextColor3 = Color3.fromRGB(0, 180, 255)
 DiscordPromo.Font = Enum.Font.Gotham
 DiscordPromo.TextSize = 11
